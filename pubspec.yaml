@@ -13,7 +13,7 @@ dependencies:
   # ui
   lottie:
   # services
-  video_player: ^2.3.0
+  video_player: ^2.4.0
   http:
   get:
   wakelock: 
