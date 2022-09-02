@@ -1,11 +1,11 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../../../pod_player.dart';
 
 class _MobileBottomSheet extends StatelessWidget {
   final String tag;
 
   const _MobileBottomSheet({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -71,10 +71,10 @@ class _MobileBottomSheet extends StatelessWidget {
   }
 
   ListTile _bottomSheetTiles({
-    required String title,
-    required IconData icon,
-    String? subText,
-    void Function()? onTap,
+    @required String title,
+    @required IconData icon,
+    String subText,
+    void Function() onTap,
   }) {
     return ListTile(
       leading: Icon(icon),
@@ -113,13 +113,13 @@ class _MobileBottomSheet extends StatelessWidget {
 }
 
 class _VideoQualitySelectorMob extends StatelessWidget {
-  final void Function()? onTap;
+  final void Function() onTap;
   final String tag;
 
   const _VideoQualitySelectorMob({
-    Key? key,
-    required this.onTap,
-    required this.tag,
+    Key key,
+    @required this.onTap,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -133,7 +133,7 @@ class _VideoQualitySelectorMob extends StatelessWidget {
               (e) => ListTile(
                 title: Text('${e.quality}p'),
                 onTap: () {
-                  onTap != null ? onTap!() : Navigator.of(context).pop();
+                  onTap != null ? onTap() : Navigator.of(context).pop();
 
                   _podCtr.changeVideoQuality(e.quality);
                 },
@@ -146,13 +146,13 @@ class _VideoQualitySelectorMob extends StatelessWidget {
 }
 
 class _VideoPlaybackSelectorMob extends StatelessWidget {
-  final void Function()? onTap;
+  final void Function() onTap;
   final String tag;
 
   const _VideoPlaybackSelectorMob({
-    Key? key,
-    required this.onTap,
-    required this.tag,
+    Key key,
+    @required this.onTap,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -166,7 +166,7 @@ class _VideoPlaybackSelectorMob extends StatelessWidget {
               (e) => ListTile(
                 title: Text(e),
                 onTap: () {
-                  onTap != null ? onTap!() : Navigator.of(context).pop();
+                  onTap != null ? onTap() : Navigator.of(context).pop();
                   _podCtr.setVideoPlayBack(e);
                 },
               ),
@@ -181,8 +181,8 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
   final String tag;
 
   const _MobileOverlayBottomControlles({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override

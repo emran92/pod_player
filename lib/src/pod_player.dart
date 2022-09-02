@@ -40,25 +40,26 @@ class PodVideoPlayer extends StatefulWidget {
   final bool matchFrameAspectRatioToVideo;
   final PodProgressBarConfig podProgressBarConfig;
   final PodPlayerLabels podPlayerLabels;
-  final Widget Function(OverLayOptions options)? overlayBuilder;
-  final Widget Function()? onVideoError;
-  final Widget? videoTitle;
-  final Color? backgroundColor;
-  final DecorationImage? videoThumbnail;
+  final Widget Function(OverLayOptions options) overlayBuilder;
+  final Widget Function() onVideoError;
+  final Widget videoTitle;
+  final Color backgroundColor;
+  final DecorationImage videoThumbnail;
+  final VoidCallback onOverlayClicked;
 
   /// Optional callback, fired when full screen mode toggles.
   ///
   /// Important: If this method is set, the configuration of [DeviceOrientation]
   /// and [SystemUiMode] is up to you.
-  final Future<void> Function(bool isFullScreen)? onToggleFullScreen;
+  final Future<void> Function(bool isFullScreen) onToggleFullScreen;
 
   /// Sets a custom loading widget.
   /// If no widget is informed, a default [CircularProgressIndicator] will be shown.
-  final WidgetBuilder? onLoading;
+  final WidgetBuilder onLoading;
 
   PodVideoPlayer({
-    Key? key,
-    required this.controller,
+    Key key,
+    @required this.controller,
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
@@ -73,11 +74,12 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoThumbnail,
     this.onToggleFullScreen,
     this.onLoading,
+    this.onOverlayClicked,
   }) : super(key: key) {
     addToUiController();
   }
 
-  static bool enableLogs = false;
+  static bool enableLogs = true;
   static bool enableGetxLogs = false;
 
   void addToUiController() {
@@ -100,13 +102,13 @@ class PodVideoPlayer extends StatefulWidget {
 
 class _PodVideoPlayerState extends State<PodVideoPlayer>
     with TickerProviderStateMixin {
-  late PodGetXVideoController _podCtr;
+  PodGetXVideoController _podCtr;
 
-  // late String tag;
+  String tag;
   @override
   void initState() {
     super.initState();
-    // tag = widget.controller?.tag ?? UniqueKey().toString();
+    // tag = widget.controller?.getTag ?? UniqueKey().toString();
     _podCtr = Get.put(
       PodGetXVideoController(),
       permanent: true,
@@ -183,7 +185,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       tag: widget.controller.getTag,
       builder: (_) {
         _frameAspectRatio = widget.matchFrameAspectRatioToVideo
-            ? _podCtr.videoCtr?.value.aspectRatio ?? widget.frameAspectRatio
+            ? _podCtr.videoCtr.value.aspectRatio ?? widget.frameAspectRatio
             : widget.frameAspectRatio;
         return Center(
           child: ColoredBox(
@@ -197,12 +199,18 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
                   return widget.onVideoError?.call() ?? _videoErrorWidget;
                 }
 
-                return AspectRatio(
-                  aspectRatio: _frameAspectRatio,
-                  child: _podCtr.videoCtr?.value.isInitialized ?? false
-                      ? _buildPlayer()
-                      : Center(child: circularProgressIndicator),
-                );
+                return _podCtr.videoCtr != null
+                    ? GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: widget.onOverlayClicked,
+                        child: AspectRatio(
+                          aspectRatio: _frameAspectRatio,
+                          child: _podCtr.videoCtr.value.isInitialized ?? false
+                              ? _buildPlayer()
+                              : Center(child: circularProgressIndicator),
+                        ),
+                      )
+                    : Center(child: circularProgressIndicator);
               },
             ),
           ),
@@ -245,7 +253,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
 
   Widget _buildPlayer() {
     final _videoAspectRatio = widget.matchVideoAspectRatioToFrame
-        ? _podCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
+        ? _podCtr.videoCtr.value.aspectRatio ?? widget.videoAspectRatio
         : widget.videoAspectRatio;
     if (kIsWeb) {
       return GetBuilder<PodGetXVideoController>(
@@ -254,7 +262,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
         builder: (_podCtr) {
           if (_podCtr.isFullScreen) return _thumbnailAndLoadingWidget();
           return _PodCoreVideoPlayer(
-            videoPlayerCtr: _podCtr.videoCtr!,
+            videoPlayerCtr: _podCtr.videoCtr,
             videoAspectRatio: _videoAspectRatio,
             tag: widget.controller.getTag,
           );
@@ -262,7 +270,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       );
     } else {
       return _PodCoreVideoPlayer(
-        videoPlayerCtr: _podCtr.videoCtr!,
+        videoPlayerCtr: _podCtr.videoCtr,
         videoAspectRatio: _videoAspectRatio,
         tag: widget.controller.getTag,
       );

@@ -11,18 +11,18 @@ import '../utils/video_apis.dart';
 import 'pod_getx_video_controller.dart';
 
 class PodPlayerController {
-  late PodGetXVideoController _ctr;
-  late String getTag;
+   PodGetXVideoController _ctr;
+   String getTag;
   bool _isCtrInitialised = false;
 
-  Object? _initializationError;
+  Object _initializationError;
 
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
 
   /// controller for pod player
   PodPlayerController({
-    required this.playVideoFrom,
+    @required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
   }) {
     _init();
@@ -69,11 +69,11 @@ class PodPlayerController {
 
     /// If a wrong video is passed to the player, it'll never being loaded.
     if (_initializationError != null) {
-      if (_initializationError! is Exception) {
-        throw _initializationError! as Exception;
+      if (_initializationError is Exception) {
+        throw _initializationError as Exception;
       }
-      if (_initializationError! is Error) {
-        throw _initializationError! as Error;
+      if (_initializationError is Error) {
+        throw _initializationError as Error;
       }
       throw Exception(_initializationError.toString());
     }
@@ -83,19 +83,19 @@ class PodPlayerController {
   }
 
   /// returns the url of current playing video
-  String? get videoUrl => _ctr.playingVideoUrl;
+  String get videoUrl => _ctr.playingVideoUrl;
 
   /// returns true if video player is initialized
-  bool get isInitialised => _ctr.videoCtr?.value.isInitialized ?? false;
+  bool get isInitialised => _ctr.videoCtr.value.isInitialized ?? false;
 
   /// returns true if video is playing
-  bool get isVideoPlaying => _ctr.videoCtr?.value.isPlaying ?? false;
+  bool get isVideoPlaying => _ctr.videoCtr.value.isPlaying ?? false;
 
   /// returns true if video is in buffering state
-  bool get isVideoBuffering => _ctr.videoCtr?.value.isBuffering ?? false;
+  bool get isVideoBuffering => _ctr.videoCtr.value.isBuffering ?? false;
 
   /// returns true if `loop` is enabled
-  bool get isVideoLooping => _ctr.videoCtr?.value.isLooping ?? false;
+  bool get isVideoLooping => _ctr.videoCtr.value.isLooping ?? false;
 
   /// returns true if video is in fullscreen mode
   bool get isFullScreen => _ctr.isFullScreen;
@@ -104,7 +104,7 @@ class PodPlayerController {
 
   PodVideoState get videoState => _ctr.podVideoState;
 
-  VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
+  VideoPlayerValue get videoPlayerValue => _ctr.videoCtr?.value;
 
   PodVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
 
@@ -176,7 +176,7 @@ class PodPlayerController {
 
   /// used to change the video
   Future<void> changeVideo({
-    required PlayVideoFrom playVideoFrom,
+    @required PlayVideoFrom playVideoFrom,
     PodPlayerConfig playerConfig = const PodPlayerConfig(),
   }) =>
       _ctr.changeVideo(
@@ -249,14 +249,14 @@ class PodPlayerController {
     _ctr.onVimeoVideoQualityChanged = callback;
   }
 
-  static Future<List<VideoQalityUrls>?> getYoutubeUrls(
+  static Future<List<VideoQalityUrls>> getYoutubeUrls(
     String youtubeIdOrUrl, {
     bool live = false,
   }) {
     return VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl, live);
   }
 
-  static Future<List<VideoQalityUrls>?> getVimeoUrls(String videoId) {
+  static Future<List<VideoQalityUrls>> getVimeoUrls(String videoId) {
     return VideoApis.getVimeoVideoQualityUrls(videoId);
   }
 

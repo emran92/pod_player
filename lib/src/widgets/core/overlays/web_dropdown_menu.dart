@@ -1,11 +1,11 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../../../pod_player.dart';
 
 class _WebSettingsDropdown extends StatefulWidget {
   final String tag;
 
   const _WebSettingsDropdown({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -151,9 +151,9 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
   }
 
   Widget _bottomSheetTiles({
-    required String title,
-    required IconData icon,
-    String? subText,
+    @required String title,
+    @required IconData icon,
+    String subText,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),

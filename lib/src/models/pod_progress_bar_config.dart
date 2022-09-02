@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
 typedef GetProgressBarBackgroundPaint = Paint Function({
-  double? width,
-  double? height,
-  double? circleHandlerRadius,
+  double width,
+  double height,
+  double circleHandlerRadius,
 });
 
 typedef GetProgressBarPlayedPaint = Paint Function({
-  double? width,
-  double? height,
-  double? playedPart,
-  double? circleHandlerRadius,
+  double width,
+  double height,
+  double playedPart,
+  double circleHandlerRadius,
 });
 
 typedef GetProgressBarBufferedPaint = Paint Function({
-  double? width,
-  double? height,
-  double? playedPart,
-  double? circleHandlerRadius,
-  double? bufferedStart,
-  double? bufferedEnd,
+  double width,
+  double height,
+  double playedPart,
+  double circleHandlerRadius,
+  double bufferedStart,
+  double bufferedEnd,
 });
 
 typedef GetProgressBarHandlePaint = Paint Function({
-  double? width,
-  double? height,
-  double? playedPart,
-  double? circleHandlerRadius,
+  double width,
+  double height,
+  double playedPart,
+  double circleHandlerRadius,
 });
 
 class PodProgressBarConfig {
@@ -61,16 +61,16 @@ class PodProgressBarConfig {
   final Color backgroundColor;
 
   /// Paint for played area.
-  final GetProgressBarPlayedPaint? getPlayedPaint;
+  final GetProgressBarPlayedPaint getPlayedPaint;
 
   /// Paint for buffered area.
-  final GetProgressBarBufferedPaint? getBufferedPaint;
+  final GetProgressBarBufferedPaint getBufferedPaint;
 
   /// Paint for handle.
-  final GetProgressBarHandlePaint? getCircleHandlerPaint;
+  final GetProgressBarHandlePaint getCircleHandlerPaint;
 
   /// Paint for background area.
-  final GetProgressBarBackgroundPaint? getBackgroundPaint;
+  final GetProgressBarBackgroundPaint getBackgroundPaint;
 
   /// Height of the progress bar.
   final double height;
@@ -88,19 +88,19 @@ class PodProgressBarConfig {
   final double curveRadius;
 
   PodProgressBarConfig copyWith({
-    Color? playingBarColor,
-    Color? bufferedBarColor,
-    Color? circleHandlerColor,
-    bool? alwaysVisibleCircleHandler,
-    Color? backgroundColor,
-    GetProgressBarPlayedPaint? getPlayedPaint,
-    GetProgressBarBufferedPaint? getBufferedPaint,
-    GetProgressBarHandlePaint? getCircleHandlerPaint,
-    GetProgressBarBackgroundPaint? getBackgroundPaint,
-    double? height,
-    EdgeInsetsGeometry? padding,
-    double? circleHandlerRadius,
-    double? curveRadius,
+    Color playingBarColor,
+    Color bufferedBarColor,
+    Color circleHandlerColor,
+    bool alwaysVisibleCircleHandler,
+    Color backgroundColor,
+    GetProgressBarPlayedPaint getPlayedPaint,
+    GetProgressBarBufferedPaint getBufferedPaint,
+    GetProgressBarHandlePaint getCircleHandlerPaint,
+    GetProgressBarBackgroundPaint getBackgroundPaint,
+    double height,
+    EdgeInsetsGeometry padding,
+    double circleHandlerRadius,
+    double curveRadius,
   }) {
     return PodProgressBarConfig(
       playingBarColor: playingBarColor ?? this.playingBarColor,

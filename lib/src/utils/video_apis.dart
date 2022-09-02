@@ -11,7 +11,7 @@ String podErrorString(String val) {
 }
 
 class VideoApis {
-  static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
+  static Future<List<VideoQalityUrls>> getVimeoVideoQualityUrls(
     String videoId,
   ) async {
     try {
@@ -24,7 +24,7 @@ class VideoApis {
         jsonData.length,
         (index) => VideoQalityUrls(
           quality: int.parse(
-            (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
+            (jsonData[index]['quality'] as String)?.split('p')?.first ?? '0',
           ),
           url: jsonData[index]['url'],
         ),
@@ -42,7 +42,7 @@ class VideoApis {
     }
   }
 
-  static Future<List<VideoQalityUrls>?> getYoutubeVideoQualityUrls(
+  static Future<List<VideoQalityUrls>> getYoutubeVideoQualityUrls(
     String youtubeIdOrUrl,
     bool live,
   ) async {

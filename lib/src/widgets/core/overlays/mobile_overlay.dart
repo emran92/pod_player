@@ -1,11 +1,11 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../../../pod_player.dart';
 
 class _MobileOverlay extends StatelessWidget {
   final String tag;
 
   const _MobileOverlay({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -127,9 +127,9 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
   final String tag;
   final bool isLeft;
   const _LeftRightDoubleTapBox({
-    Key? key,
-    required this.tag,
-    required this.isLeft,
+    Key key,
+    @required this.tag,
+    @required this.isLeft,
   }) : super(key: key);
 
   @override

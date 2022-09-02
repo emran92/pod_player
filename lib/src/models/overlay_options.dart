@@ -14,17 +14,17 @@ class OverLayOptions {
   final PodVideoPlayerType videoPlayerType;
   final PodProgressBar podProgresssBar;
   OverLayOptions({
-    required this.podVideoState,
-    required this.videoDuration,
-    required this.videoPosition,
-    required this.isFullScreen,
-    required this.isLooping,
-    required this.isOverlayVisible,
-    required this.isMute,
-    required this.autoPlay,
-    required this.currentVideoPlaybackSpeed,
-    required this.videoPlayBackSpeeds,
-    required this.videoPlayerType,
-    required this.podProgresssBar,
+     this.podVideoState,
+     this.videoDuration,
+     this.videoPosition,
+     this.isFullScreen,
+     this.isLooping,
+     this.isOverlayVisible,
+     this.isMute,
+     this.autoPlay,
+     this.currentVideoPlaybackSpeed,
+     this.videoPlayBackSpeeds,
+     this.videoPlayerType,
+     this.podProgresssBar,
   });
 }

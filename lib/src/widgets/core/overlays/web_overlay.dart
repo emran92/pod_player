@@ -1,10 +1,10 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../../../pod_player.dart';
 
 class _WebOverlay extends StatelessWidget {
   final String tag;
   const _WebOverlay({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -62,8 +62,8 @@ class _WebOverlayBottomControlles extends StatelessWidget {
   final String tag;
 
   const _WebOverlayBottomControlles({
-    Key? key,
-    required this.tag,
+    Key key,
+    @required this.tag,
   }) : super(key: key);
 
   @override

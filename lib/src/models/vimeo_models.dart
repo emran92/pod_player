@@ -2,8 +2,8 @@ class VideoQalityUrls {
   int quality;
   String url;
   VideoQalityUrls({
-    required this.quality,
-    required this.url,
+     this.quality,
+     this.url,
   });
 
   @override

@@ -1,13 +1,13 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../pod_player.dart';
 
 class _AnimatedPlayPauseIcon extends StatefulWidget {
-  final double? size;
+  final double size;
   final String tag;
 
   const _AnimatedPlayPauseIcon({
-    Key? key,
+    Key key,
     this.size,
-    required this.tag,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -16,8 +16,8 @@ class _AnimatedPlayPauseIcon extends StatefulWidget {
 
 class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _payCtr;
-  late PodGetXVideoController _podCtr;
+  AnimationController _payCtr;
+  PodGetXVideoController _podCtr;
   @override
   void initState() {
     _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);

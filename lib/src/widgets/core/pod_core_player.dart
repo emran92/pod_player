@@ -1,4 +1,4 @@
-part of 'package:pod_player/src/pod_player.dart';
+part of '../../pod_player.dart';
 
 class _PodCoreVideoPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
@@ -6,10 +6,10 @@ class _PodCoreVideoPlayer extends StatelessWidget {
   final String tag;
 
   const _PodCoreVideoPlayer({
-    Key? key,
-    required this.videoPlayerCtr,
-    required this.videoAspectRatio,
-    required this.tag,
+    Key key,
+    @required this.videoPlayerCtr,
+    @required this.videoAspectRatio,
+    @required this.tag,
   }) : super(key: key);
 
   @override
@@ -74,6 +74,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                 child: GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'podVideoState',
+                  // ignore: missing_return
                   builder: (_podCtr) {
                     final loadingWidget = _podCtr.onLoading?.call(context) ??
                         const Center(
