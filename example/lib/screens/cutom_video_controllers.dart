@@ -67,19 +67,19 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
   Widget build(BuildContext context) {
     ///
     const sizeH20 = SizedBox(height: 20);
-    final _totalHour = controller.currentVideoPosition.inHours == 0
+    final totalHour = controller.currentVideoPosition.inHours == 0
         ? '0'
         : '${controller.currentVideoPosition.inHours}:';
-    final _totalMinute =
+    final totalMinute =
         controller.currentVideoPosition.toString().split(':')[1];
-    final _totalSeconds = (controller.currentVideoPosition -
+    final totalSeconds = (controller.currentVideoPosition -
             Duration(minutes: controller.currentVideoPosition.inMinutes))
         .inSeconds
         .toString()
         .padLeft(2, '0');
 
     ///
-    const _videoTitle = Padding(
+    const videoTitle = Padding(
       padding: kIsWeb
           ? EdgeInsets.symmetric(vertical: 25, horizontal: 15)
           : EdgeInsets.only(left: 15),
@@ -109,7 +109,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 controller: controller,
                 matchFrameAspectRatioToVideo: true,
                 matchVideoAspectRatioToFrame: true,
-                videoTitle: _videoTitle,
+                videoTitle: videoTitle,
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -137,9 +137,9 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                     ),
                     sizeH20,
                     Text(
-                      '$_totalHour hour: '
-                      '$_totalMinute minute: '
-                      '$_totalSeconds seconds',
+                      '$totalHour hour: '
+                      '$totalMinute minute: '
+                      '$totalSeconds seconds',
                       style: textStyle,
                     ),
                     sizeH20,
@@ -156,6 +156,15 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                       });
                     }),
                     sizeH20,
+                    _iconButton('Show Overlay', Icons.slideshow_outlined,
+                        onPressed: () {
+                      controller.showOverlay();
+                    }),
+                    sizeH20,
+                    _iconButton('Hide Overlay', Icons.hide_image,
+                        onPressed: () {
+                      controller.hideOverlay();
+                    }),
                     _iconButton('Backward video 5s', Icons.replay_5_rounded,
                         onPressed: () {
                       controller.doubleTapVideoBackward(5);
@@ -188,7 +197,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                       'Is video initialized: ${controller.isInitialised}\n'
                       'Is video playing: ${controller.isVideoPlaying}\n'
                       'Is video Buffering: ${controller.isVideoBuffering}\n'
-                      'Is video looping: ${controller.isVideoLooping}',
+                      'Is video looping: ${controller.isVideoLooping}\n'
+                      'Is video in fullscreeen: ${controller.isFullScreen}',
                       style: textStyle,
                     ),
                     sizeH20,
@@ -204,6 +214,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () => controller.togglePlayPause(),
         child: isVideoPlaying == null
             ? const SizedBox(
                 height: 20,
@@ -215,8 +227,6 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 ),
               )
             : Icon(!isVideoPlaying! ? Icons.play_arrow : Icons.pause),
-        backgroundColor: Colors.black,
-        onPressed: () => controller.togglePlayPause(),
       ),
     );
   }
@@ -254,6 +264,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                   controller.addListener(_listner);
                 },
               );
+              if (!mounted) return;
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             } catch (e) {
               snackBar(
@@ -299,6 +310,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                   controller.addListener(_listner);
                 },
               );
+              if (!mounted) return;
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             } catch (e) {
               snackBar(
@@ -338,6 +350,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 playVideoFrom: PlayVideoFrom.network(videoTextFieldCtr.text),
               );
               controller.addListener(_listner);
+              if (!mounted) return;
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             } catch (e) {
               snackBar('Unable to load,\n $e');

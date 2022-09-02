@@ -33,7 +33,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
   }
 
   void playPauseListner() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (_podCtr.podVideoState == PodVideoState.playing) {
         if (mounted) _payCtr.forward();
       }
@@ -45,7 +45,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
 
   @override
   void dispose() {
-    podLog('Play-pause-controller-disposed');
+    // podLog('Play-pause-controller-disposed');
     _payCtr.dispose();
     super.dispose();
   }
@@ -61,8 +61,10 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
           id: 'podVideoState',
           builder: (_f) => MaterialIconButton(
             toolTipMesg: _f.isvideoPlaying
-                ? 'Pause${kIsWeb ? ' (space)' : ''}'
-                : 'Play${kIsWeb ? ' (space)' : ''}',
+                ? _podCtr.podPlayerLabels.pause ??
+                    'Pause${kIsWeb ? ' (space)' : ''}'
+                : _podCtr.podPlayerLabels.play ??
+                    'Play${kIsWeb ? ' (space)' : ''}',
             onPressed:
                 _podCtr.isOverlayVisible ? _podCtr.togglePlayPauseVideo : null,
             child: onStateChange(_podCtr),

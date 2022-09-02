@@ -1,17 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:wakelock/wakelock.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
-import '../utils/vimeo_video_api.dart';
+import '../utils/video_apis.dart';
 
 part 'pod_base_controller.dart';
 part 'pod_gestures_controller.dart';
@@ -19,7 +18,7 @@ part 'pod_ui_controller.dart';
 part 'pod_video_controller.dart';
 part 'pod_video_quality_controller.dart';
 
-class PodGetXVideoController extends _PodUiController {
+class PodGetXVideoController extends _PodGesturesController {
   ///main videoplayer controller
   VideoPlayerController? get videoCtr => _videoCtr;
 
@@ -97,7 +96,7 @@ class PodGetXVideoController extends _PodUiController {
         break;
       case PodVideoPlayerType.networkQualityUrls:
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: playVideoFrom.videoQualityUrls!,
         );
 
@@ -113,10 +112,12 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
       case PodVideoPlayerType.youtube:
-        final _urls =
-            await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
+        final _urls = await getVideoQualityUrlsFromYoutube(
+          playVideoFrom.dataSource!,
+          playVideoFrom.live,
+        );
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality ?? 360,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: _urls,
         );
 
@@ -132,11 +133,10 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
       case PodVideoPlayerType.vimeo:
-
-        ///
-        final _url = await getVideoUrlFromVimeoId(
-          quality: podPlayerConfig.initialVideoQuality,
-          videoId: playVideoFrom.dataSource,
+        await getQualityUrlsFromVimeoId(playVideoFrom.dataSource!);
+        final _url = await getUrlFromVideoQualityUrls(
+          qualityList: podPlayerConfig.videoQualityPriority,
+          videoUrls: vimeoOrVideoUrls,
         );
 
         _videoCtr = VideoPlayerController.network(
@@ -207,7 +207,9 @@ class PodGetXVideoController extends _PodUiController {
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
           _html.document.exitFullscreen();
-          if (!isWebPopupOverlayOpen) disableFullScreen(appContext, tag);
+          if (!isWebPopupOverlayOpen) {
+            disableFullScreen(appContext, tag);
+          }
         }
       }
 
@@ -218,7 +220,9 @@ class PodGetXVideoController extends _PodUiController {
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
       _html.document.exitFullscreen();
-      if (!isWebPopupOverlayOpen) disableFullScreen(context, tag);
+      if (!isWebPopupOverlayOpen) {
+        disableFullScreen(context, tag);
+      }
     } else {
       _html.document.documentElement?.requestFullscreen();
       enableFullScreen(tag);
@@ -249,7 +253,7 @@ class PodGetXVideoController extends _PodUiController {
 
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (autoPlay && (isVideoUiBinded ?? false)) {
         if (kIsWeb) await _videoCtr?.setVolume(0);
         podVideoStateChanger(PodVideoState.playing);
